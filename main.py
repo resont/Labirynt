@@ -44,6 +44,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = first_room_x
             self.rect.y = first_room_y
 
+        #zmiana grafiki przy ruchu
+
         if self.movement_x > 0:
             self.image = pygame.image.load(os.path.join('game2', 'player_1.png'))
 
@@ -56,15 +58,17 @@ class Player(pygame.sprite.Sprite):
         if self.movement_y < 0:
             self.image = pygame.image.load(os.path.join('game2', 'player_4.png'))
 
+        # wykrywanie kolizji
+
         for rock in rocks:
             if self.rect.colliderect(rock.rect):
-                if self.movement_x > 0: # Moving right; Hit the left side of the rock
+                if self.movement_x > 0: 
                     self.rect.right = rock.rect.left
-                if self.movement_x < 0: # Moving left; Hit the right side of the rock
+                if self.movement_x < 0: 
                     self.rect.left = rock.rect.right
-                if self.movement_y > 0: # Moving down; Hit the top side of the rock
+                if self.movement_y > 0: 
                     self.rect.bottom = rock.rect.top
-                if self.movement_y < 0: # Moving up; Hit the bottom side of the rock
+                if self.movement_y < 0: 
                     self.rect.top = rock.rect.bottom
 
     def get_event(self, event):
@@ -88,6 +92,7 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_s and self.movement_y > 0:
                 self.stop()
 
+#poziomy
 
 level1 = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -104,7 +109,6 @@ level1 = [
 rocks = []
 
 class Wall:
-    
     def __init__(self, pos):
         rocks.append(self)
         self.rect = pygame.Rect(pos[0], pos[1], 60, 60)
@@ -134,11 +138,16 @@ hidden_blocks = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ]
 
+#klasa elementów labiryntu
+
 class Plate(pygame.sprite.Sprite):
 
     def __init__(self,plate_type,x,y,player,hidden):
         self.plate_type = plate_type
         self.hidden = hidden
+
+        #sprawdzanie czy blok jest ukryty czy nie
+
         if (player.rect.x == x-60 and player.rect.y == y) or (player.rect.x == x+60 and player.rect.y == y) or (player.rect.x == x and player.rect.y == y+60) or (player.rect.x == x and player.rect.y == y-60) or (player.rect.x == x and player.rect.y == y) or (self.hidden == 1):
             if self.plate_type == 0:
                 self.image = pygame.image.load(os.path.join('game2', 'rock.png'))
@@ -156,8 +165,6 @@ class Plate(pygame.sprite.Sprite):
 
     def draw(self,surface):
         surface.blit(self.image, self.rect)
-
-
 
 # konkretyzacja obiektów
 player = Player(pygame.image.load(os.path.join('game2', 'player_2.png')))
@@ -183,6 +190,8 @@ while window_open:
     
     hidden_x, hidden_y = 0, 0
 
+
+    #rysowanie labiryntu
     for y in level1:
         for x in y:
 
@@ -194,7 +203,8 @@ while window_open:
             
             plate = Plate(x,start_x,start_y,player,hidden_blocks[hidden_y][hidden_x])
             plate.draw(screen)
-
+            
+            #zapisywanie które bloki zostały pokazane
             hidden_blocks[hidden_y][hidden_x] = plate.hidden
 
             start_x += 60
