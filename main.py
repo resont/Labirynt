@@ -1,12 +1,58 @@
 import pygame, os
-import numpy as np
+import time
+import random
 os.environ['SDL_VIDEO_CENTERED'] = '1'          # centrowanie okna
 pygame.init()
+
 
 screen_size = width, height = 1920, 1080
 screen = pygame.display.set_mode(screen_size)
 pygame.display.set_caption('Labirynt')
 clock = pygame.time.Clock()
+pygame.font.init()
+
+#poziomy
+
+level1 = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1],
+    [0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0],
+    [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+level2 = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,1,1,1,1,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0],
+    [1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+
+level3 = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
+    [1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,1,1,1],
+    [0,0,0,0,1,0,0,0,1,1,1,1,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+
+levels = [level1,level2,level3]
+level = random.choice(levels)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, file_image):
@@ -40,9 +86,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += self.movement_x
         self.rect.y += self.movement_y
 
-        if self.rect.colliderect(0,0,390,400):
+        if self.rect.colliderect(0,0,390,1000):
             self.rect.x = first_room_x
             self.rect.y = first_room_y
+
+        if self.rect.colliderect(1470,0,1800,1000):
+            self.rect.x = 1410
+            self.rect.y = last_room_y
+            
 
         #zmiana grafiki przy ruchu
 
@@ -92,20 +143,17 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_s and self.movement_y > 0:
                 self.stop()
 
-#poziomy
 
-level1 = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-]
+class Text(pygame.sprite.Sprite):
+    def __init__(self,text):
+        self.text = text
+        self.my_font = pygame.font.SysFont('Arial Black', 80)
+        self.textsurface = self.my_font.render(self.text, False, (255, 255, 255))
+        screen.blit(self.textsurface,(750,70))
+
+
+
+
 rocks = []
 
 class Wall:
@@ -115,7 +163,7 @@ class Wall:
 
 start_x, start_y = 390, 190
     
-for y in level1:
+for y in level:
     for x in y:
 
         if x == 0:
@@ -170,7 +218,7 @@ class Plate(pygame.sprite.Sprite):
 player = Player(pygame.image.load(os.path.join('game2', 'player_2.png')))
 
 
-first = True
+first, last = True, True
 # głowna pętla gry
 window_open = True
 while window_open:
@@ -192,7 +240,7 @@ while window_open:
 
 
     #rysowanie labiryntu
-    for y in level1:
+    for y in level:
         for x in y:
 
             if first == True and y[0] == 1:
@@ -200,6 +248,10 @@ while window_open:
                 first_room_y = start_y
                 player.rect.x, player.rect.y = first_room_x, first_room_y
                 first = False
+
+            if last == True and y[17] == 1:
+                last_room_y = start_y
+                last = False
             
             plate = Plate(x,start_x,start_y,player,hidden_blocks[hidden_y][hidden_x])
             plate.draw(screen)
@@ -217,6 +269,8 @@ while window_open:
 
     player.update()
     player.draw(screen)
+    if player.rect.x == 1410 and player.rect.y == last_room_y:
+        text = Text("Wygrałeś!")
     
     
 
