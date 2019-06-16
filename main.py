@@ -1,6 +1,7 @@
 import pygame, os
 import time
 import random
+import levels as lvl
 os.environ['SDL_VIDEO_CENTERED'] = '1'          # centrowanie okna
 pygame.init()
 
@@ -11,48 +12,6 @@ pygame.display.set_caption('Labirynt')
 clock = pygame.time.Clock()
 pygame.font.init()
 
-#poziomy
-
-level1 = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1],
-    [0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0],
-    [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
-    [0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-]
-level2 = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0],
-    [0,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,1,1,1,1,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0],
-    [1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-]
-
-level3 = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
-    [1,1,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,1,1,1],
-    [0,0,0,0,1,0,0,0,1,1,1,1,1,1,1,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-]
-
-levels = [level1,level2,level3]
-level = random.choice(levels)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, file_image):
@@ -151,9 +110,6 @@ class Text(pygame.sprite.Sprite):
         self.textsurface = self.my_font.render(self.text, False, (255, 255, 255))
         screen.blit(self.textsurface,(750,70))
 
-
-
-
 rocks = []
 
 class Wall:
@@ -163,7 +119,7 @@ class Wall:
 
 start_x, start_y = 390, 190
     
-for y in level:
+for y in lvl.level:
     for x in y:
 
         if x == 0:
@@ -173,18 +129,7 @@ for y in level:
     start_x = 390
     start_y += 60
 
-hidden_blocks = [
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-]
+
 
 #klasa elementów labiryntu
 
@@ -240,7 +185,7 @@ while window_open:
 
 
     #rysowanie labiryntu
-    for y in level:
+    for y in lvl.level:
         for x in y:
 
             if first == True and y[0] == 1:
@@ -253,11 +198,11 @@ while window_open:
                 last_room_y = start_y
                 last = False
             
-            plate = Plate(x,start_x,start_y,player,hidden_blocks[hidden_y][hidden_x])
+            plate = Plate(x,start_x,start_y,player,lvl.hidden_blocks[hidden_y][hidden_x])
             plate.draw(screen)
             
             #zapisywanie które bloki zostały pokazane
-            hidden_blocks[hidden_y][hidden_x] = plate.hidden
+            lvl.hidden_blocks[hidden_y][hidden_x] = plate.hidden
 
             start_x += 60
             hidden_x += 1
